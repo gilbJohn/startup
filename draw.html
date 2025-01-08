@@ -3,18 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drawing Game - Draw Page</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Draw on Drixal</title>
+    <link rel="stylesheet" href="styles/draw.css">
 </head>
 <body>
-    <div class="container">
+    <header>
         <h1>Draw Your Masterpiece!</h1>
-        <canvas id="drawingCanvas" width="800" height="600"></canvas>
-        <div class="controls">
-            <button id="clearCanvas">Clear</button>
-            <button id="saveDrawing">Save</button>
+    </header>
+    <main>
+        <div class="container">
+            
+            <!-- Canvas for drawing -->
+            <canvas id="drawingCanvas" width="800" height="600"></canvas>
+            
+            <!-- Controls for drawing settings -->
+            <div class="controls">
+                <!-- Brush size control -->
+                <label for="brushSize">Brush Size:</label>
+                <input type="range" id="brushSize" name="brushSize" min="1" max="10" value="5">
+                
+
+                <label for="eraserSize">Eraser Size:</label>
+                <input type="range" id="eraserSize" min="1" max="10" value="5">
+                <!-- Color control -->
+                <input type="color" id="Color" name="Color" value="black">
+
+
+            </div>
+
+            <!-- Action buttons -->
+            <div class="action-buttons">
+                <button id="clearCanvas">Clear</button>
+                <button id="saveDrawing">Save</button>
+            </div>
         </div>
-        <a href="index.html">back to login</a>
-    </div>
+    </main>
+    <footer>
+        <a href="https://github.com/gilbJohn/startup" target="_blank">GitHub</a>
+        <a href="/gallary.html">Gallery</a>
+    </footer>
 </body>
 </html>

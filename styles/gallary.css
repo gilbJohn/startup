@@ -1,0 +1,59 @@
+/* Global Styles */
+html, body {
+    font-family: 'Trebuchet MS', Arial, sans-serif;
+    background-color: #FDE7F4;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    text-align: center;
+    background-color: #E1B5D3;
+    padding: 20px;
+    color: #4A154B;
+}
+
+main {
+    flex: 1;
+}
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #E1B5D3;
+}
+
+footer a {
+    margin: 0 10px;
+    text-decoration: none;
+    color: #4A154B;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+/* Gallery Styles */
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.gallery-item {
+    border: 2px solid #4A154B;
+    border-radius: 8px;
+    background-color: #ffffff;
+    overflow: hidden;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
