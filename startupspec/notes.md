@@ -12,4 +12,3 @@ This is for BYU CS260
 - This command is import when deploying files as well. scp -i ~/Documents/cs260/keys/production.pem draw.ht
 ml ubuntu@getdrixal.com:/home/ubuntu/public_html/
 draw.html
-
