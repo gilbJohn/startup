@@ -4,9 +4,7 @@
 
 ## Elevator Pitch
 
-This webiste is a drawing application that allows users to draw, create and save their masterpieces!
-
----
+This webiste is a drawing application that allows users to draw, create and save their masterpieces! This makes it simple to save and simple to draw, no fancy tools just use your imagination! You can also view art from the community and see what other people are doing! 
 
 ## Key Features
 
