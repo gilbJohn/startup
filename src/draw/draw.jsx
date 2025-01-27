@@ -1,7 +1,7 @@
 import React from "react";
 import './draw.css';
 
-export function Draw() {
+export default function Draw() {
   return (
     <main>
       <div className="container">
