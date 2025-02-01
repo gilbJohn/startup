@@ -1,12 +1,17 @@
-import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
-import Login from './login/login';
-import Gallary from './gallary/gallary';
-import Draw from './draw/draw';
-import './app.css';
+import React, { useState } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { BrowserRouter, NavLink, Route, Routes, Navigate } from "react-router-dom";
+import Login from "./login/login";
+import Gallary from "./gallary/gallary";
+import Draw from "./draw/draw";
+import "./app.css";
 
 export default function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const handleLogin = () => setIsLoggedIn(true);
+  const handleLogout = () => setIsLoggedIn(false);
+
   return (
     <BrowserRouter>
       <div className="app">
@@ -14,23 +19,31 @@ export default function App() {
           <h1>Draw Your Masterpiece</h1>
           <nav>
             <ul>
-              <li>
-                <NavLink className="nav-link" to="/">Login</NavLink>
-              </li>
-              <li>
-                <NavLink className="nav-link" to="/draw">Draw</NavLink>
-              </li>
-              <li>
-                <NavLink className="nav-link" to="/gallary">Gallery</NavLink>
-              </li>
+              {!isLoggedIn ? (
+                <li>
+                  <NavLink className="nav-link" to="/">Login</NavLink>
+                </li>
+              ) : (
+                <>
+                  <li>
+                    <NavLink className="nav-link" to="/draw">Draw</NavLink>
+                  </li>
+                  <li>
+                    <NavLink className="nav-link" to="/gallary">Gallery</NavLink>
+                  </li>
+                  <li>
+                    <NavLink className="nav-link logout-button" onClick={handleLogout}>Logout</NavLink>
+                  </li>
+                </>
+              )}
             </ul>
           </nav>
         </header>
         <main>
           <Routes>
-            <Route path="/" element={<Login />} />
-            <Route path="/draw" element={<Draw />} />
-            <Route path="/gallary" element={<Gallary />} />
+            <Route path="/" element={<Login onLogin={handleLogin} />} />
+            <Route path="/draw" element={isLoggedIn ? <Draw /> : <Navigate to="/" />} />
+            <Route path="/gallary" element={isLoggedIn ? <Gallary /> : <Navigate to="/" />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>

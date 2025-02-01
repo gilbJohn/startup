@@ -138,3 +138,5 @@ So I need to take notes on what I am doing so they see that I am not cheating. B
 - I am lost
 - This is the point I got to in the class that I didn't know. Everything else so far I have done except the deploying and AWS but that was pretty simple
 - We will see how it goes
+- I finally Got Simon React part 2 deployed and that is really helpful
+- I don't know exactly what to do for my application but I am going to try.

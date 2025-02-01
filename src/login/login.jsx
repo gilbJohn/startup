@@ -1,25 +1,43 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./login.css";
-import 'bootstrap/dist/css/bootstrap.min.css';
 
-export default function Login() {
+export default function Login({ onLogin }) {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate(); // Redirect after login
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    if (username && password) {
+      onLogin(); // Update login status
+      navigate("/draw"); // Redirect to Gallery
+    }
+  };
+
   return (
     <main>
-      <div className="login-container">
-        <form>
+      <div className="container">
+        <form onSubmit={handleLogin}>
           <div className="form-group">
             <label htmlFor="username">Username:</label>
-            <input type="text" id="username" name="username" />
+            <input
+              type="text"
+              id="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
           </div>
           <div className="form-group">
             <label htmlFor="password">Password:</label>
-            <input type="password" id="password" name="password" />
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
           </div>
-          {/* Button Group */}
-          <div className="button-group">
-            <button type="submit">Login</button>
-            <button type="button">Create</button>
-          </div>
+          <button type="submit">Login</button>
         </form>
       </div>
     </main>
