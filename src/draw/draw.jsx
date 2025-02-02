@@ -63,19 +63,24 @@ export default function Draw() {
     ctxRef.current.clearRect(0, 0, canvas.width, canvas.height);
   };
 
-  const saveDrawing = () => {
-    const canvas = canvasRef.current;
-    const image = canvas.toDataURL("image/png");
-    const link = document.createElement("a");
-    link.href = image;
-    link.download = "drawing.png";
-    link.click();
+  const saveToGallery = () => {
+    const canvas = document.getElementById("drawingCanvas");
+    const imageData = canvas.toDataURL("image/png"); // Convert canvas to an image
+  
+    // Get existing images from local storage or create a new array
+    const savedDrawings = JSON.parse(localStorage.getItem("galleryImages")) || [];
+    savedDrawings.push(imageData); // Add new image to the array
+  
+    localStorage.setItem("galleryImages", JSON.stringify(savedDrawings)); // Save to local storage
+    alert("Drawing saved to gallery!");
   };
+  
 
   return (
     <main>
       <div className="container">
         <canvas
+          id="drawingCanvas"
           ref={canvasRef}
           width="800"
           height="600"
@@ -97,7 +102,7 @@ export default function Draw() {
 
         <div className="action-buttons">
           <button onClick={clearCanvas}>Clear</button>
-          <button onClick={saveDrawing}>Save</button>
+          <button id="saveDrawing" onClick={saveToGallery}>Save</button>
           <button onClick={enableEraser}>Eraser</button>
         </div>
       </div>

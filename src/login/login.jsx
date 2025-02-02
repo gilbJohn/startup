@@ -17,7 +17,7 @@ export default function Login({ onLogin }) {
 
   return (
     <main>
-      <div className="container">
+      <div className="login-container">
         <form onSubmit={handleLogin}>
           <div className="form-group">
             <label htmlFor="username">Username:</label>
