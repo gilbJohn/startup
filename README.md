@@ -140,3 +140,6 @@ So I need to take notes on what I am doing so they see that I am not cheating. B
 - We will see how it goes
 - I finally Got Simon React part 2 deployed and that is really helpful
 - I don't know exactly what to do for my application but I am going to try.
+- I first added the login stuff. All it does is it checks if the user name and password are filled in and if they are then the user can access the other places. The gallery and draw features are hidden until they do that.
+- The draw feature works. I needed a lot of help with it and it is definately the most complicated thing that I did but it works. It's a little buggy but it is good enough for the first version
+- I was initially going to not touch the gallary but a figured out how to save the images to the gallery using local storage. It works really well right now and the styling is way better than I expected. 
