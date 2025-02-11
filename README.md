@@ -143,3 +143,10 @@ So I need to take notes on what I am doing so they see that I am not cheating. B
 - I first added the login stuff. All it does is it checks if the user name and password are filled in and if they are then the user can access the other places. The gallery and draw features are hidden until they do that.
 - The draw feature works. I needed a lot of help with it and it is definately the most complicated thing that I did but it works. It's a little buggy but it is good enough for the first version
 - I was initially going to not touch the gallary but a figured out how to save the images to the gallery using local storage. It works really well right now and the styling is way better than I expected. 
+
+### Startup Service
+- Well I feel lost again but not as lost as functionality
+- I got a lot to learn I think the examples were pretty goo
+- The most important thing is the login, I am going to take a look at the login code for simon and see how I can impliment it into my system.
+- Startup goes on 4000 simon goes on 3000
+- 
