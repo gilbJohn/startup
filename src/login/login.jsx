@@ -3,15 +3,65 @@ import { useNavigate } from "react-router-dom";
 import "./login.css";
 
 export default function Login({ onLogin }) {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate(); // Redirect after login
+  const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  // 🆕 Register User
+  const handleRegister = async (e) => {
     e.preventDefault();
-    if (username && password) {
-      onLogin(); // Update login status
-      navigate("/draw"); // Redirect to Gallery
+    try {
+      const response = await fetch("http://localhost:3001/api/register", {
+        method: "POST",
+        headers: {'Content-type': 'application/json; charset=UTF-8'},
+        body: JSON.stringify({ email, password }),
+      });
+      if (response.ok) {
+        setMessage("Registration successful! You can now log in.");
+      } else {
+        const error = await response.json();
+        setMessage(error.msg || "Failed to register.");
+      }
+    } catch (err) {
+      console.log(err);
+      setMessage("Network error during registration.");
+    }
+  };
+
+  // 🔐 Login User
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch("http://localhost:3001/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      if (response.ok) {
+        onLogin();
+        navigate("/draw"); // Redirect to the protected Draw page
+      } else {
+        const error = await response.json();
+        setMessage(error.msg || "Login failed.");
+      }
+    } catch (err) {
+      console.log(err);
+      setMessage("Network error during login.");
+    }
+  };
+
+  // 🚪 Logout User
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("http://localhost:3001/api/logout", { method: "DELETE" });
+      if (response.ok) {
+        setMessage("Successfully logged out!");
+      } else {
+        setMessage("Failed to log out.");
+      }
+    } catch (err) {
+      setMessage("Network error during logout.");
     }
   };
 
@@ -19,15 +69,19 @@ export default function Login({ onLogin }) {
     <main>
       <div className="login-container">
         <form onSubmit={handleLogin}>
+          {/* Email Input */}
           <div className="form-group">
-            <label htmlFor="username">Username:</label>
+            <label htmlFor="email">Email:</label>
             <input
-              type="text"
-              id="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </div>
+
+          {/* Password Input */}
           <div className="form-group">
             <label htmlFor="password">Password:</label>
             <input
@@ -35,10 +89,20 @@ export default function Login({ onLogin }) {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              required
             />
           </div>
-          <button type="submit">Login</button>
+
+          {/* Action Buttons */}
+          
+          <div className="button-group">
+            <button type="submit">Login</button>
+            <button type="button" onClick={handleRegister}>
+              Register
+            </button>
+          </div>
         </form>
+        <p className="message">{message}</p>
       </div>
     </main>
   );

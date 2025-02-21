@@ -18,9 +18,12 @@ header {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.app {
+  flex: 1;
+}
+
 /* === Main Content Styling === */
 main {
-  flex: 1; /* Allows main content to expand and fill available space */
   padding: 20px;
   background-color: #F0D9E9;
 }
@@ -34,7 +37,6 @@ footer {
   box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
 }
 
-
 /* === Navigation Styling === */
 header nav ul {
   display: flex; /* Makes the list items display in a row */
@@ -43,20 +45,29 @@ header nav ul {
   margin: 0;
   gap: 20px; /* Adds spacing between navigation items */
   justify-content: center; /* Centers the navigation items */
+  align-items: center; /* Ensures vertical alignment */
 }
 
 header nav ul li {
-  margin: 0;
+  display: flex; /* Ensures items inside are flexed */
+  align-items: center; /* Aligns items vertically */
 }
 
-header nav .nav-link {
+/* Style for nav links and logout button */
+.nav-link, .logout-button {
   text-decoration: none; /* Removes underline */
   color: #4A154B; /* Adds custom color */
   font-size: 16px;
   font-weight: bold;
+  background: none;  /* Remove default button styling */
+  border: none;
+  cursor: pointer;
+  font-family: inherit; /* Make sure it uses the same font */
+  padding: 0; /* Removes default padding */
 }
 
-header nav .nav-link:hover {
+/* Hover effect for nav links and logout button */
+.nav-link:hover, .logout-button:hover {
   text-decoration: underline;
 }
 
@@ -65,9 +76,3 @@ header nav .nav-link:hover {
   flex-direction: column;
   min-height: 100vh; /* Ensures it stretches the full viewport height */
 }
-
-main {
-  flex: 1; /* Allows main content to grow and push the footer down */
-}
-
-

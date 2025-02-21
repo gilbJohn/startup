@@ -149,4 +149,9 @@ So I need to take notes on what I am doing so they see that I am not cheating. B
 - I got a lot to learn I think the examples were pretty goo
 - The most important thing is the login, I am going to take a look at the login code for simon and see how I can impliment it into my system.
 - Startup goes on 4000 simon goes on 3000
-- 
+- I did it!!! I finally Did it! I got my backend connected to my frontend. I knew my backend was working because I tested it with the curl commands but it was taking me so long to get my backend to work. I realized my links were off. Then I fixed the routing and it finally worked. Then I had a problem with the logout I could get it to work. Then I realised that it was because I was using a post command and not a delete command.
+- create - put
+- login - post
+- logout - delete
+
+### Startup DB

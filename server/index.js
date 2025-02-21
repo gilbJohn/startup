@@ -1,96 +1,73 @@
 const express = require('express');
-const app = express();
-const cookieParser = require('cookie-parser');
-const uuid = require('uuid');
 const bcrypt = require('bcrypt');
+const cookieParser = require('cookie-parser');
+const cors = require('cors');
+
+
+
+const app = express();
+const port = 3001;
+const authCookieName = 'token';
+
+
+
+// In-memory user database (cleared when server restarts)
+let users = [];
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors({ origin: "http://localhost:5173", methods: ["GET", "POST", "PUT", "DELETE"], credentials: true }));
 
-//create User
-app.post('/api/auth', async (req, res) => {
-  if (await getUser('email', req.body.email)) {
-    res.status(409).send({ msg: 'Existing user' });
-  } else {
-    const user = await createUser(req.body.email, req.body.password);
-    setAuthCookie(res, user);
+// Route to register a new user
+app.post('/api/register', async (req, res) => {
+  const { email, password } = req.body;
 
-    res.send({ email: user.email });
-  }
-});
-
-
-//login
-app.put('/api/auth', async (req, res) => {
-  const user = await getUser('email', req.body.email);
-  if (user && (await bcrypt.compare(req.body.password, user.password))) {
-    setAuthCookie(res, user);
-
-    res.send({ email: user.email });
-  } else {
-    res.status(401).send({ msg: 'Unauthorized' });
-  }
-});
-
-app.delete('/api/auth', async (req, res) => {
-  const token = req.cookies['token'];
-  const user = await getUser('token', token);
-  if (user) {
-    clearAuthCookie(res, user);
+  // Check if user already exists
+  if (users.find(user => user.email === email)) {
+    return res.status(409).json({ msg: 'User already exists' });
   }
 
-  res.send({});
-});
-
-//getMe
-
-app.get('/api/user/me', async (req, res) => {
-  const token = req.cookies['token'];
-  const user = await getUser('token', token);
-  if (user) {
-    res.send({ email: user.email });
-  } else {
-    res.status(401).send({ msg: 'Unauthorized' });
-  }
-});
-
-const users = [];
-
-async function createUser(email, password) {
-  const passwordHash = await bcrypt.hash(password, 10);
-
-  const user = {
-    email: email,
-    password: passwordHash,
-  };
-
+  // Hash the password
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const user = { email, password: hashedPassword };
   users.push(user);
 
-  return user;
-}
+  res.status(201).json({ msg: 'User registered successfully' });
+});
 
-async function getUser(field, value) {
-  return users.find((user) => user[field] === value);
-}
+// Route to log in a user
+app.post('/api/login', async (req, res) => {
+  const { email, password } = req.body;
 
-function setAuthCookie(res, user) {
-  user.token = uuid.v4();
+  // Find user by email
+  const user = users.find(user => user.email === email);
+  if (!user) {
+    return res.status(401).json({ msg: 'Invalid email or password' });
+  }
 
-  res.cookie('token', user.token, {
-    secure: true,
+  // Check password
+  const passwordMatch = await bcrypt.compare(password, user.password);
+  if (!passwordMatch) {
+    return res.status(401).json({ msg: 'Invalid email or password' });
+  }
+
+  // Set an auth cookie
+  res.cookie(authCookieName, 'some-token-value', {
     httpOnly: true,
     sameSite: 'strict',
+    secure: false, // Set to true in production with HTTPS
   });
-}
 
-function clearAuthCookie(res, user) {
-  delete user.token;
-  res.clearCookie('token');
-}
+  res.status(200).json({ msg: 'Login successful' });
+});
 
-//Port
+// Route to log out
+app.delete("/api/logout", (req, res) => {
+  res.clearCookie("token"); // Assuming you're using a cookie-based token
+  res.status(200).json({ message: "Logged out successfully" });
+});
 
-const port = 3001;
-app.listen(port, function () {
-  console.log(`Listening on port ${port}`);
+// Start the server
+app.listen(port, () => {
+  console.log(`Server running on http://localhost:${port}`);
 });
