@@ -12,7 +12,7 @@ export default function Login({ onLogin }) {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:3001/api/register", {
+      const response = await fetch("/api/register", {
         method: "POST",
         headers: {'Content-type': 'application/json; charset=UTF-8'},
         body: JSON.stringify({ email, password }),
@@ -33,7 +33,7 @@ export default function Login({ onLogin }) {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:3001/api/login", {
+      const response = await fetch("/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -54,7 +54,7 @@ export default function Login({ onLogin }) {
   // 🚪 Logout User
   const handleLogout = async () => {
     try {
-      const response = await fetch("http://localhost:3001/api/logout", { method: "DELETE" });
+      const response = await fetch("/api/logout", { method: "DELETE" });
       if (response.ok) {
         setMessage("Successfully logged out!");
       } else {
@@ -94,7 +94,6 @@ export default function Login({ onLogin }) {
           </div>
 
           {/* Action Buttons */}
-          
           <div className="button-group">
             <button type="submit">Login</button>
             <button type="button" onClick={handleRegister}>

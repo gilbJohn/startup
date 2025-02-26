@@ -153,5 +153,7 @@ So I need to take notes on what I am doing so they see that I am not cheating. B
 - create - put
 - login - post
 - logout - delete
+- I finally finished! I got everything working on deployment. The issue was I had a didn't install cors in my backend and that was causing problems
+- Deliverables: Call third party(The cs260 api because I couldn't think of anything else), express(express and the middleware are used in my index.js file), api and endpoints(login, register, and logout are the endpoints and they connect throuht the front end and work good enough.)
 
 ### Startup DB

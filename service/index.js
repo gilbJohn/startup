@@ -2,14 +2,14 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-
-
+const path = require("path");
 
 const app = express();
-const port = 3001;
+
+// Select the port based on command-line argument, defaulting to 4000
+const port = process.argv.length > 2 ? process.argv[2] : 4000;
+
 const authCookieName = 'token';
-
-
 
 // In-memory user database (cleared when server restarts)
 let users = [];
@@ -65,6 +65,14 @@ app.post('/api/login', async (req, res) => {
 app.delete("/api/logout", (req, res) => {
   res.clearCookie("token"); // Assuming you're using a cookie-based token
   res.status(200).json({ message: "Logged out successfully" });
+});
+
+// Serve static files from the 'public' directory after deployment
+app.use(express.static(path.join(__dirname, "public")));
+
+// Catch-all route to serve the index.html from the build folder
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
 });
 
 // Start the server

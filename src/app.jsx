@@ -17,7 +17,7 @@ export default function App() {
   const handleLogout = async () => {
     // Call backend logout endpoint
     try {
-      const response = await fetch("http://localhost:3001/api/logout", { method: "DELETE" });
+      const response = await fetch("/api/logout", { method: "DELETE" });
       if (response.ok) {
         setIsLoggedIn(false);
       } else {
