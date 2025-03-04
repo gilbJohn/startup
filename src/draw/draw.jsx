@@ -63,16 +63,28 @@ export default function Draw() {
     ctxRef.current.clearRect(0, 0, canvas.width, canvas.height);
   };
 
-  const saveToGallery = () => {
+  const saveToGallery = async () => {
     const canvas = document.getElementById("drawingCanvas");
-    const imageData = canvas.toDataURL("image/png"); // Convert canvas to an image
+    const imageData = canvas.toDataURL("image/png"); // Convert canvas to Base64
   
-    // Get existing images from local storage or create a new array
-    const savedDrawings = JSON.parse(localStorage.getItem("galleryImages")) || [];
-    savedDrawings.push(imageData); // Add new image to the array
+    try {
+      const response = await fetch("api/save-drawing", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ image: imageData }),
+      });
   
-    localStorage.setItem("galleryImages", JSON.stringify(savedDrawings)); // Save to local storage
-    alert("Drawing saved to gallery!");
+      if (response.ok) {
+        alert("Drawing saved successfully!");
+      } else {
+        alert("Failed to save drawing.");
+      }
+    } catch (error) {
+      console.error("Error saving drawing:", error);
+      alert("An error occurred while saving the drawing.");
+    }
   };
   
 
