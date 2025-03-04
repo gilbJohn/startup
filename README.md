@@ -157,3 +157,10 @@ So I need to take notes on what I am doing so they see that I am not cheating. B
 - Deliverables: Call third party(The cs260 api because I couldn't think of anything else), express(express and the middleware are used in my index.js file), api and endpoints(login, register, and logout are the endpoints and they connect throuht the front end and work good enough.)
 
 ### Startup DB
+- Did the simon version and that was pretty simple. All I had to do was add my credentials
+- Adding the users to the data base wasn't too bad it was pretty similar code to the the example simon
+- It took me a while but I figured out how to save the images to the database.
+- I might work on retreving them later when I implement websockets
+- Now I just need to upload this to the ssh
+- Deliverables: Put users in database check
+- Deliverables: Put application data in the database check(I store image urls in there)
