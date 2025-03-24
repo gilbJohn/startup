@@ -164,3 +164,12 @@ So I need to take notes on what I am doing so they see that I am not cheating. B
 - Now I just need to upload this to the ssh
 - Deliverables: Put users in database check
 - Deliverables: Put application data in the database check(I store image urls in there)
+
+### Startup Websocket
+- I did not understand this for a while
+- Super confused
+- I got a test websocket working that is similar to the 
+- All I want to do is send a message over the websocket if someone is drawing. I want to keep it simple
+- My websocket needs to be opened on the same port as my backend I think
+- Yeah that is true
+- Deliverable: My beckend listens for the websocket
