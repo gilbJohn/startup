@@ -172,4 +172,9 @@ So I need to take notes on what I am doing so they see that I am not cheating. B
 - All I want to do is send a message over the websocket if someone is drawing. I want to keep it simple
 - My websocket needs to be opened on the same port as my backend I think
 - Yeah that is true
+- Websocket is buggy
+- Fixed it I had the 'Some one is drawing in the wrong function'
 - Deliverable: My beckend listens for the websocket
+- Deliverable: My Frontend makes Websocket Conntection
+- Deliverable: Data is sent over - it sends if a user is drawing on the canvas
+- Deliverable: It displays it in the draw part of the application.
