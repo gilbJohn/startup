@@ -22,6 +22,7 @@ export default function QuoteComponent() {
     <div className="text-center p-3 border rounded bg-light">
       <p className="fs-4 fst-italic">"{quote}"</p>
       <p className="fs-6 fw-bold text-muted">— {author}</p>
+      
     </div>
   );
 }

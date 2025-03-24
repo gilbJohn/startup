@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const path = require("path");
 const DB = require('./database.js'); // Import MongoDB functions
+const { setupWebSocket } = require('./websocket.js');  // Import WebSocket setup
 
 const app = express();
 
@@ -15,8 +16,7 @@ const authCookieName = 'token';
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({ origin: "http://localhost:5173", methods: ["GET", "POST", "PUT", "DELETE"], credentials: true }));
-app.use(express.json({limit: "10mb"}));
-
+app.use(express.json({ limit: "10mb" }));
 
 // Route to register a new user
 app.post('/api/register', async (req, res) => {
@@ -85,20 +85,19 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "build", "index.html"));
 });
 
-//Get and save images
-
-app.post("/api/save-drawing", async(req, res) => {
-  const {image} = req.body
+// Get and save images
+app.post("/api/save-drawing", async (req, res) => {
+  const { image } = req.body;
   if (!image) return res.status(400).send("Invalid Input");
-  
+
   await DB.saveImage(image);
-  res.send({msg: "Drawing saved"});
+  res.send({ msg: "Drawing saved" });
 });
 
 // Get last saved image
 app.get("/api/get-drawing", async (req, res) => {
   try {
-    const lastDrawing = await Drawing.findOne().sort({ _id: -1 }); // Get the most recent drawing
+    const lastDrawing = await DB.getLastDrawing(); // Changed from `Drawing.findOne()` to `DB.getLastDrawing()`
     res.status(200).json(lastDrawing || {});
   } catch (error) {
     res.status(500).json({ error: "Failed to retrieve drawing." });
@@ -106,6 +105,8 @@ app.get("/api/get-drawing", async (req, res) => {
 });
 
 // Start the server
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
+const httpService = app.listen(port, () => {
+  console.log(`Listening on port ${port}`);
 });
+
+setupWebSocket(httpService);  // Pass the HTTP server to WebSocket

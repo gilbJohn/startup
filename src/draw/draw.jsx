@@ -8,6 +8,8 @@ export default function Draw() {
   const [brushSize, setBrushSize] = useState(10);
   const [eraserSize, setEraserSize] = useState(20);
   const [color, setColor] = useState("black");
+  const socketRef = useRef(null);
+  const [drawingStatus, setDrawingStatus] = useState("No one is drawing");
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -15,13 +17,46 @@ export default function Draw() {
     ctx.lineCap = "round"; // Smooth edges
     ctx.lineJoin = "round";
     ctxRef.current = ctx;
+
+    // Initialize WebSocket connection only once
+    socketRef.current = new WebSocket("ws://localhost:4000"); // Change this to your WebSocket server
+
+    socketRef.current.onopen = () => {
+      console.log("Connected to WebSocket server");
+    };
+
+    socketRef.current.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      if (data.type === "drawing") {
+        setDrawingStatus("Someone is drawing...");
+      } else if (data.type === "stopped") {
+        setDrawingStatus("No one is drawing");
+      }
+    };
+
+    socketRef.current.onclose = () => {
+      console.log("Disconnected from WebSocket server");
+    };
+
+    return () => {
+      // Cleanup WebSocket connection when the component unmounts
+      socketRef.current.close();
+    };
   }, []);
+
+  const sendWebSocketMessage = (message) => {
+    if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
+      socketRef.current.send(JSON.stringify(message));
+    }
+  };
 
   const startDrawing = (e) => {
     const { offsetX, offsetY } = e.nativeEvent;
     ctxRef.current.beginPath();
     ctxRef.current.moveTo(offsetX, offsetY);
     setIsDrawing(true);
+
+    sendWebSocketMessage({ type: "drawing" });
   };
 
   const draw = (e) => {
@@ -29,11 +64,15 @@ export default function Draw() {
     const { offsetX, offsetY } = e.nativeEvent;
     ctxRef.current.lineTo(offsetX, offsetY);
     ctxRef.current.stroke();
+
+    
   };
 
   const stopDrawing = () => {
     ctxRef.current.closePath();
     setIsDrawing(false);
+
+    sendWebSocketMessage({ type: "stopped" });
   };
 
   const handleBrushSizeChange = (e) => {
@@ -117,6 +156,10 @@ export default function Draw() {
           <button id="saveDrawing" onClick={saveToGallery}>Save</button>
           <button onClick={enableEraser}>Eraser</button>
         </div>
+
+        <div className="websocket">
+            <p>{drawingStatus}</p>
+          </div>
       </div>
     </main>
   );
