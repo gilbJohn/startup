@@ -15,20 +15,14 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "vite": "^6.0.7"
+    "vite": "^6.0.7",
+    "vite-plugin-compression": "^0.5.1",
+    "vite-plugin-purgecss": "^0.2.13"
   },
   "dependencies": {
-    "bcrypt": "^5.1.1",
     "bootstrap": "^5.3.3",
-    "cookie-parser": "^1.4.7",
-    "cors": "^2.8.5",
-    "express": "^4.21.2",
-    "mongodb": "^6.13.1",
     "react": "^19.0.0",
-    "react-bootstrap": "^2.10.7",
     "react-dom": "^19.0.0",
-    "react-router-dom": "^7.1.2",
-    "uuid": "^11.0.5",
-    "ws": "^8.18.1"
+    "react-router-dom": "^7.1.2"
   }
 }

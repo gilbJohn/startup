@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function QuoteComponent() {
   const [quote, setQuote] = useState('Loading...');
