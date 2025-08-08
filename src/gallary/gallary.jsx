@@ -20,7 +20,7 @@ export default function Gallary() {
         {images.length > 0 ? (
           images.map((src, index) => (
             <div key={index} className="gallery-item">
-              <img src={src} alt={`Drawing ${index + 1}`} />
+              <img src={src} alt={`Drawing ${index + 1}`} loading="lazy" decoding="async" fetchPriority="low" />
             </div>
           ))
         ) : (

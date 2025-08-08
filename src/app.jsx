@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
+import React, { useState, Suspense, lazy } from "react";
 import { BrowserRouter, NavLink, Route, Routes, Navigate } from "react-router-dom";
-import Login from "./login/login";
-import Gallary from "./gallary/gallary";
-import Draw from "./draw/draw";
 import "./app.css";
-import QuoteComponent from "../components/quote";
+
+const Login = lazy(() => import("./login/login"));
+const Gallary = lazy(() => import("./gallary/gallary"));
+const Draw = lazy(() => import("./draw/draw"));
+const QuoteComponent = lazy(() => import("../components/quote"));
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -57,19 +57,21 @@ export default function App() {
           </nav>
         </header>
 
-        <main>
-          <Routes>
-            {/* Login route */}
-            <Route path="/" element={<Login onLogin={handleLogin} />} />
-            {/* Protected routes */}
-            <Route path="/draw" element={isLoggedIn ? <Draw /> : <Navigate to="/" />} />
-            <Route path="/gallary" element={isLoggedIn ? <Gallary /> : <Navigate to="/" />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </main>
+        <Suspense fallback={<div>Loading...</div>}>
+          <main>
+            <Routes>
+              {/* Login route */}
+              <Route path="/" element={<Login onLogin={handleLogin} />} />
+              {/* Protected routes */}
+              <Route path="/draw" element={isLoggedIn ? <Draw /> : <Navigate to="/" />} />
+              <Route path="/gallary" element={isLoggedIn ? <Gallary /> : <Navigate to="/" />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </main>
 
-        {/* Quote component */}
-        <QuoteComponent/>
+          {/* Quote component */}
+          <QuoteComponent/>
+        </Suspense>
 
         {/* Footer with GitHub link */}
         <footer>

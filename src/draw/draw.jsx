@@ -18,29 +18,42 @@ export default function Draw() {
     ctx.lineJoin = "round";
     ctxRef.current = ctx;
 
-    // Initialize WebSocket connection only once
-    socketRef.current = new WebSocket("ws://localhost:4000"); // Change this to your WebSocket server
+    let visibilityHandler;
 
-    socketRef.current.onopen = () => {
-      console.log("Connected to WebSocket server");
+    const connect = () => {
+      if (socketRef.current || document.visibilityState !== 'visible') return;
+      socketRef.current = new WebSocket("ws://localhost:4000");
+      socketRef.current.onopen = () => {
+        // connected
+      };
+      socketRef.current.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        if (data.type === "drawing") {
+          setDrawingStatus("Someone is drawing...");
+        } else if (data.type === "stopped") {
+          setDrawingStatus("No one is drawing");
+        }
+      };
+      socketRef.current.onclose = () => {
+        socketRef.current = null;
+      };
     };
 
-    socketRef.current.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      if (data.type === "drawing") {
-        setDrawingStatus("Someone is drawing...");
-      } else if (data.type === "stopped") {
-        setDrawingStatus("No one is drawing");
-      }
-    };
-
-    socketRef.current.onclose = () => {
-      console.log("Disconnected from WebSocket server");
-    };
+    if (document.visibilityState === 'visible') {
+      connect();
+    } else {
+      visibilityHandler = () => {
+        if (document.visibilityState === 'visible') {
+          connect();
+          document.removeEventListener('visibilitychange', visibilityHandler);
+        }
+      };
+      document.addEventListener('visibilitychange', visibilityHandler);
+    }
 
     return () => {
-      // Cleanup WebSocket connection when the component unmounts
-      socketRef.current.close();
+      if (visibilityHandler) document.removeEventListener('visibilitychange', visibilityHandler);
+      if (socketRef.current) socketRef.current.close();
     };
   }, []);
 
